@@ -1,3 +1,3 @@
-# exe自我删除
+# self delete
 
-程序运行时会将磁盘上自己的exe文件给删除掉
+When the program runs, it will delete its own exe file on the disk
