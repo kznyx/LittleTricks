@@ -165,9 +165,9 @@ int main(int argc, char** argv) {
     }
 
 #if defined(_M_X64) // _M_AMD64
-    std::cout << "[+] this is x64 platom" << std::endl;
+    std::cout << "[+] this is x64 platform" << std::endl;
 #else
-    std::cout << "[+] this is x86 platom" << std::endl;
+    std::cout << "[+] this is x86 platform" << std::endl;
 #endif
 
     DWORD pid = atoi(argv[1]);
